@@ -1,0 +1,26 @@
+{
+  "name": "resumake-client",
+  "version": "3.0.0",
+  "description": "The client-side for Resumake",
+  "author": "Saad Quadri",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel serve src/index.html --port 3000",
+    "typecheck": "tsc --noEmit",
+    "lint": "lynt",
+    "test": "npm run typecheck && npm run lint",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\""
+  },
+  "dependencies": {
+    "@types/react": "^16.4.0",
+    "@types/react-dom": "^16.0.6",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
+  },
+  "devDependencies": {
+    "lynt": "^0.3.1",
+    "parcel-bundler": "^1.9.1",
+    "prettier": "^1.13.5",
+    "typescript": "^2.9.2"
+  }
+}
