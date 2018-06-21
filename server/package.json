@@ -1,0 +1,28 @@
+{
+  "name": "resumake-server",
+  "version": "3.0.0",
+  "description": "The server-side for Resumake",
+  "author": "Saad Quadri",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "lynt",
+    "test": "npm run typecheck && npm run lint",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@types/koa": "^2.0.46",
+    "@types/koa-router": "^7.0.29",
+    "koa": "^2.5.1",
+    "koa-router": "^7.4.0"
+  },
+  "devDependencies": {
+    "lynt": "^0.3.1",
+    "nodemon": "^1.17.5",
+    "prettier": "^1.13.5",
+    "ts-node": "^6.1.2",
+    "typescript": "^2.9.2"
+  }
+}
