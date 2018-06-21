@@ -1,12 +1,15 @@
 import React from 'react'
 import { render } from 'react-dom'
+import ErrorBoundary from './errors'
+import App from './app'
 
-const App = () => (
-  <div>
-    <h1>Resumake</h1>
-  </div>
+const root = document.querySelector('#app')
+
+render(
+  <ErrorBoundary>
+    <App />
+  </ErrorBoundary>,
+  root
 )
 
-const root = document.getElementById('app')
-
-render(<App />, root)
+export default App
