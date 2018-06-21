@@ -1,6 +1,5 @@
 import React from 'react'
-import styled, { injectGlobal } from 'styled-components'
-import ErrorBoundary from '../errors'
+import { injectGlobal } from 'styled-components'
 
 injectGlobal`
   body {
