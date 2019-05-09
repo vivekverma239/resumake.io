@@ -2,6 +2,10 @@ FROM node:8
 # Create app directory
 WORKDIR /usr/src/app
 
+RUN apt-get update
+RUN apt-get install -y texlive-full
+
+
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
@@ -15,9 +19,9 @@ RUN npm run build
 # RUN npm ci --only=production
 
 
-EXPOSE 3000
 
 EXPOSE 3001
+EXPOSE 3000
 
 CMD [ "npm", "start" ]
 
