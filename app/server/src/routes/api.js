@@ -43,4 +43,8 @@ router.post('/upload', async ({ request, response }) => {
   response.type = 'application/json'
 })
 
+router.get('/test', ({request, response}) => {
+  response.body="Engine is running";
+})
+
 export default router
