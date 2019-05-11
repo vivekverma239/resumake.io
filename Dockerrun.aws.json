@@ -2,9 +2,9 @@
   "AWSEBDockerrunVersion": 2,
   "volumes": [
     {
-      "name": "app",
+      "name": "resume-maker",
       "host": {
-        "sourcePath": "/var/app/current/app"
+        "sourcePath": "/var/app/current/resume-maker"
       }
     },
     {
@@ -22,7 +22,7 @@
   ],
   "containerDefinitions": [
     {
-      "name": "app",
+      "name": "resume-maker",
       "image": "node:8",
       "essential": true,
       "memory": 128,
@@ -32,7 +32,7 @@
       ],
       "mountPoints": [
         {
-          "sourceVolume": "app",
+          "sourceVolume": "resume-maker",
           "containerPath": "/usr/src/app"
         }
       ]
@@ -53,7 +53,7 @@
         }       
       ],
       "links": [
-        "app"
+        "resume-maker"
       ],
       "mountPoints": [
         {
