@@ -25,10 +25,10 @@
       "name": "resume-maker",
       "image": "node:8",
       "essential": true,
-      "memory": 128,
+      "memory": 4096,
+      "memoryReservation": 2048,
       "command": [
-        "/bin/bash",
-        "/usr/src/app/run.sh"
+        "/bin/bash", "/usr/src/app/run.sh"
       ],
       "mountPoints": [
         {
