@@ -31,7 +31,9 @@ const config = {
         target: 'http://localhost:3001',
         secure: false
       }
-    }
+    },
+    disableHostCheck: true
+
   },
 
   module: {

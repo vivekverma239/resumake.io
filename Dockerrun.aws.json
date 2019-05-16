@@ -1,0 +1,76 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "volumes": [
+    {
+      "name": "resume-maker",
+      "host": {
+        "sourcePath": "/var/app/current/resume-maker"
+      }
+    },
+    {
+      "name": "nginx-proxy-conf",
+      "host": {
+        "sourcePath": "/var/app/current/proxy/conf.d"
+      }
+    },
+    {
+      "name": "nginx-proxy-static",
+      "host": {
+        "sourcePath": "/var/app/current/proxy/html"
+      }
+    }
+  ],
+  "containerDefinitions": [
+    {
+      "name": "resume-maker",
+      "image": "node:8",
+      "essential": true,
+      "memory": 128,
+      "command": [
+        "/bin/bash",
+        "/usr/src/app/run.sh"
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "resume-maker",
+          "containerPath": "/usr/src/app"
+        }
+      ]
+    },
+    {
+      "name": "nginx-proxy",
+      "image": "nginx",
+      "essential": true,
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        },
+        {
+          "hostPort": 8080,
+          "containerPort": 8080
+        }       
+      ],
+      "links": [
+        "resume-maker"
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "awseb-logs-nginx-proxy",
+          "containerPath": "/var/log/nginx"
+        },
+        {
+          "sourceVolume": "nginx-proxy-static",
+          "containerPath": "/usr/share/nginx/html",
+          "readOnly": true
+        },
+        {
+          "sourceVolume": "nginx-proxy-conf",
+          "containerPath": "/etc/nginx/conf.d",
+          "readOnly": true
+        }
+      ]
+    }
+  ]
+}
