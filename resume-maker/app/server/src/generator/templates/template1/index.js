@@ -189,6 +189,88 @@ const generator: Template1Generator = {
     `
     },
 
+    porSection(por, heading) {
+        if (!por) {
+            return ''
+        }
+
+        return source`
+      %==== Position of Responsibility ====%
+      \\header{${heading || 'Position of Responsibility'}}
+      \\vspace{1mm}
+
+      ${por.map(singlePor => {
+            const {
+                organization,
+                positions,
+            } = singlePor
+
+            let line1 = ''
+
+            if (organization) {
+                line1 += `\\textbf{${organization}}`
+            }
+
+            if (line1) line1 += '\\\\'
+
+            let positionLines = ''
+
+
+            if (positions) {
+                positionLines = positions.map(position => {
+                    const {role, startDate, endDate, highlights, summary} = position;
+                    let roleLine = ''
+                    let summaryLine = ''
+                    let highlightLines = ''
+                    if (role) {
+                        roleLine += `\\textit{${role}} `
+                    }
+                    if (startDate && endDate) {
+                        roleLine += ` \\hfill ${startDate} - ${endDate}`
+                    } else if (startDate) {
+                        roleLine += ` \\hfill ${startDate} - Present`
+                    } else if (endDate) {
+                        roleLine += ` \\hfill ${endDate}`
+                    }
+                    if (roleLine) roleLine += '\\\\'
+
+                    if (summary) {
+                        summaryLine = source`
+                    \\vspace{-1mm}
+                    \\begin{center}
+                    ${summary}
+                    \\end{center}
+                    \\vspace{-3mm}
+                    `
+                    }
+                    if (highlights) {
+                        highlightLines += source`
+                    \\vspace{-2mm}
+                    \\begin{itemize} \\itemsep 1pt
+                    ${highlights.map(highlight => {
+                            return source`
+                        \\item ${highlight}
+                        `
+                        })}
+                    \\end{itemize}
+                    `
+                    }
+                    return source`
+                ${roleLine}
+                ${summaryLine}
+                ${highlightLines}
+                `
+                }).join(`\n`)
+            }
+
+            return stripIndent`
+          ${line1}
+          ${positionLines}
+        `
+        })}
+    `
+    },
+
     skillsSection(skills, heading) {
         if (!skills) {
             return ''
@@ -317,6 +399,149 @@ const generator: Template1Generator = {
     `
     },
 
+    volunteerSection(volunteers, heading) {
+        if(!volunteers || volunteers.length===0) return ''
+
+        const headingName = heading || `Volunteer`
+        return source`
+        \\header{${headingName}}
+        ${volunteers.map(volunteer => {
+            const {organization,
+                position,
+                website,
+                startDate,
+                endDate,
+                summary,
+                highlights,} = volunteer
+            let line1 = ``
+            let positionLine = ``
+            let hightlightLines = ``
+            
+            if(organization && website) {
+                line1 += `\\href{${website}}{\\textbf{${organization}}}`
+            } else if (organization) {
+                line1 += `\\textbf{${organization}}`
+            }
+            if (startDate && endDate) {
+                line1 += ` \\hfill ${startDate} - ${endDate}`
+            } else if (startDate) {
+                line1 += ` \\hfill ${startDate} - Present`
+            } else if (endDate) {
+                line1 += ` \\hfill ${endDate}`
+            }
+            
+            if(line1) line1 += '\\\\'
+            
+            if(position) {
+                positionLine += `\\textsl{${position}} \\\\`
+            }
+            
+            if(highlights && highlights.length > 0) {
+                hightlightLines = source`
+                \\begin{itemize} \\itemsep 1pt
+                ${highlights.map(highlight => 
+                    source`
+                    \\item ${highlight}
+                    `
+                )}
+                \\end{itemize}
+                `    
+            }
+            return source`
+            ${line1}
+            ${positionLine}
+            ${hightlightLines}
+            `
+        })}
+        `
+
+    },
+
+    interestsSection(interests, heading) {
+        if(!interests || interests.length === 0) return ''
+
+        return source`
+        \\header{${heading || 'Interests' }}
+        ${interests.join(', ')} \\\\
+        \\vspace{3mm}
+        `
+    },
+
+    publicationsSection(publications, heading) {
+        if(!publications || publications.length === 0) return ''
+
+        return source`
+        \\header{${heading || 'Publications'}}
+        ${publications.map(publication => {
+            const {name, publisher, releaseDate, website, summary} = publication
+            
+            let line1 = ''
+            let line2 = ''
+            let summaryLine = ''
+            
+            if(name && website) {
+                line1 += `\\href{${website}}{\\textbf{${name}}} `
+            } else if(name) {
+                line1 += `\\textbf{${name}}`
+            }
+            
+            if(publisher) {
+                line1 += `\\hfill ${publisher} `
+            }
+            if(line1) line1 += `\\\\`
+            
+            if(releaseDate) {
+                line2 += `\\hfill ${releaseDate} \\\\`
+            }
+            
+            if(summary) {
+                summaryLine = `${summary} \\\\`
+            }
+            
+            return source`
+            ${line1}
+            ${line2}
+            ${summaryLine}
+            `
+        }).join('\\vspace{3mm} \n')}
+        `
+    },
+    extraCurricularSection(extraCurricular, heading) {
+        if(!extraCurricular || extraCurricular.length === 0) return ''
+
+        return source`
+        \\header{${heading || 'Extra Curricular'}}
+        ${extraCurricular.map(singleExtraCurricular => {
+            const {activityName, role, highlights} = singleExtraCurricular
+            
+            let line1 = ''
+            let highlightLines = ''
+            
+            if(activityName) {
+                line1 += `\\textbf{${activityName}} `
+            }
+            
+            if(role) {
+                line1 += `\\hfill ${role}`
+            }
+            
+            if(line1) line1 += '\\\\'
+            
+            if(highlights && highlights.length > 0) {
+                highlightLines = source`
+                \\begin{itemize} \\itemsep 1pt
+                ${highlights.map(higlight => `\\item ${higlight}`)}
+                \\end{itemize}
+                `
+            }
+            return source`
+            ${line1}
+            ${highlightLines}
+            `
+        }).join('\\vspace{3mm} \n')}
+        `
+    },
+
     resumeDefinitions() {
         return stripIndent`
       %\\renewcommand{\\encodingdefault}{cg}
@@ -409,6 +634,11 @@ function template1(values: SanitizedValues) {
                 case 'skills':
                 case 'projects':
                 case 'awards':
+                case 'volunteer':
+                case 'interests':
+                case 'por':
+                case 'publications':
+                case 'extraCurricular':
                     return generator[`${section}Section`](values[section], headings[section])
                 default:
                     return ''

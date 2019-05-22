@@ -8,7 +8,12 @@ const data =  {
         "work",
         "skills",
         "projects",
-        "awards"
+        "volunteer",
+        "awards",
+        "interests",
+        "por",
+        "publications",
+        "extraCurricular"
     ],
     basics: {
         name: "Rajat Raj",
@@ -148,13 +153,22 @@ const data =  {
             summary: 'Was awarded for being overall active member in the committee',
         }
     ],
-    publications: [{
+    publications: [
+        {
         name: "Publication",
-        publisher: "Company",
+        publisher: "Publisher",
         releaseDate: "2014-10-01",
         website: "http://publication.com",
         summary: "Description..."
-    }],
+        },
+        {
+            name: "Publication",
+            publisher: "Publisher",
+            releaseDate: "2014-10-01",
+            website: "http://publication.com",
+            summary: "Description..."
+        }],
+    interests: ["Dance", "Boxing"],
     extraCurricular: [
         {
             activityName: 'Dance',
@@ -164,7 +178,33 @@ const data =  {
                 'Mob flash'
             ]
         }
-    ]
+    ],
+    por: [
+        {
+            organization: 'Spring Fest',
+            positions: [
+                {
+                    role: 'Web Sub Head',
+                    startDate: 'October 2018',
+                    endDate: 'October 2019',
+                    highlights: [
+                        "First time started working in an iOS project named AFE. Designed a few screens and built it with intuitive interactions within 2 months",
+                        "Supported a legacy iOS project FDG where I got opportunity to build many features which helped me understand nuances of iOS programming",
+                        "Got opportunity to work in a flagship Project of SLT from scratch where I created web app using ReactJS and also helped building middle tier stack in aws"
+                    ],
+                },
+                {
+                    role: 'Web Head',
+                    startDate: 'October 2019',
+                    endDate: 'October 2020',
+                    highlights: [
+                        "Led a team of 4 members to build the JOYN Analytics",
+                        "Used python and C combined to reduce the latency"
+                    ],
+                }
+            ],
+        }
+    ],
 };
 
 console.log(template1.default(data));
