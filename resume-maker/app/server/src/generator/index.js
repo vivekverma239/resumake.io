@@ -6,7 +6,8 @@ import latex from 'node-latex'
 import prettify from 'pretty-latex'
 import Archiver from 'archiver'
 import { stripIndent } from 'common-tags'
-import getTemplateData from './templates'
+import getTemplateDataV1 from './v1/templates'
+import getTemplateDataV2 from './v2/templates'
 import type { Transform } from 'stream'
 import type { SanitizedValues } from '../types'
 
@@ -19,8 +20,17 @@ import type { SanitizedValues } from '../types'
  * @return The generated PDF.
  */
 
-function generatePDF(formData: SanitizedValues): Transform {
-  const { texDoc, opts } = getTemplateData(formData)
+function generatePDF(formData: SanitizedValues, version?: string = "v1"): Transform {
+    let {texDoc, opts} = {};
+    if (version === "v1") {
+        let templateData = getTemplateDataV1(formData)
+        texDoc = templateData.texDoc
+        opts = templateData.opts || {}
+    } else if(version === "v2") {
+        let templateData = getTemplateDataV2(formData)
+        texDoc = templateData.texDoc
+        opts = templateData.opts || {}
+    }
   const pdf = latex(texDoc, opts)
 
   return pdf
@@ -35,22 +45,31 @@ function generatePDF(formData: SanitizedValues): Transform {
  * @return The generated zip.
  */
 
-function generateSourceCode(formData: SanitizedValues): Transform {
-  const { texDoc, opts = {} } = getTemplateData(formData)
-  const prettyDoc = prettify(texDoc)
-  const zip = Archiver('zip')
-  const readme = makeReadme(formData.selectedTemplate, opts.cmd)
+function generateSourceCode(formData: SanitizedValues, version?: string = "v1"): Transform {
+    let {texDoc, opts} = {};
+    if (version === "v1") {
+        let templateData = getTemplateDataV1(formData)
+        texDoc = templateData.texDoc
+        opts = templateData.opts || {}
+    } else if(version === "v2") {
+        let templateData = getTemplateDataV2(formData)
+        texDoc = templateData.texDoc
+        opts = templateData.opts || {}
+    }
+    const prettyDoc = prettify(texDoc)
+    const zip = Archiver('zip')
+    const readme = makeReadme(formData.selectedTemplate, opts.cmd)
 
-  zip.append(prettyDoc, { name: 'resume.tex' })
-  zip.append(readme, { name: 'README.md' })
+    zip.append(prettyDoc, { name: 'resume.tex' })
+    zip.append(readme, { name: 'README.md' })
 
-  if (opts.inputs) {
-    zip.directory(opts.inputs, '../')
-  }
+    if (opts.inputs) {
+      zip.directory(opts.inputs, '../')
+    }
 
-  zip.finalize()
+    zip.finalize()
 
-  return zip
+    return zip
 }
 
 /**

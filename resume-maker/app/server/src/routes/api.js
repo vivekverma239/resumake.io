@@ -35,6 +35,26 @@ router.post('/generate/source', async ({ request, response }) => {
 })
 
 /**
+ * Version 2
+ * Generate PDF from form data
+ */
+
+router.post('/v2/generate/resume', async ({ request, response }) => {
+    response.body = generatePDF((request.body: any), 'v2')
+    response.type = 'application/pdf'
+})
+
+/**
+ * Version 2
+ * Generate TeX source from form data
+ */
+
+router.post('/v2/generate/source', async ({ request, response }) => {
+    response.body = generateSourceCode((request.body: any), 'v2')
+    response.type = 'application/zip'
+})
+
+/**
  * Handle JSON upload from input file
  */
 
