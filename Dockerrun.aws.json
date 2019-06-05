@@ -25,8 +25,8 @@
       "name": "resume-maker",
       "image": "node:8",
       "essential": true,
-      "memory": 4096,
-      "memoryReservation": 2048,
+      "memory": 1024,
+      "memoryReservation": 1024,
       "command": [
         "/bin/bash", "/usr/src/app/run.sh"
       ],
@@ -50,7 +50,7 @@
         {
           "hostPort": 8080,
           "containerPort": 8080
-        }       
+        }
       ],
       "links": [
         "resume-maker"
